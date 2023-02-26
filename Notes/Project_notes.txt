@@ -1,0 +1,101 @@
+Connect Four (Javascript)
+
+Brief:
+P1 denotes player 1, the user
+P2 denotes another user or computer player (to be determined in project scoping).
+
+Connect four is a 6 row by 7 column grid based game.
+Each player takes turns inserting tokens into a column that land in the next available row.
+    - So if a player inserts a token in column 4.
+    - The token will land in [n available rows] - [n filled rows]. (i.e. just above the last token inserted in that row).
+
+When a player has at least four adjacent tokens of their color (i.e. in horizontal, diagonal, vertical) the associated player wins.
+
+status variables (global):
+    bool win_status, full_status
+
+Global variables:
+    int available_slots // immutable
+    int token_count
+    int cols = 7
+    int rows = 6
+    
+
+
+Modules:
+    checkWinner()
+    checkFull()
+    displayGrid()
+    displayRules()
+    emptyGrid() 
+    updateGrid(color, column)
+
+Algorithms ~~~~~~~
+
+checkFull:
+    if token_count >= available_slots
+        full_status = true
+
+displayGrid:
+    for (let i = 0; i < rows; i++)
+        for (let k = 0; k < cols; i++)
+            //draw grid
+
+displayRules:
+    print rules on screen/browser
+
+emptyGrid:
+    iteratively re-initialize each slot to null
+
+updategrid:
+    token++
+
+    for 
+
+
+CheckWinner:
+
+
+
+
+- ~~~ display game rules ~~~
+
+Game Loop Algorithm:
+    - assign player 1 as red and player 2 as black
+    - display initialized game board (empty connect four grid)
+
+        Loop until broken
+        - prompt player to choose a column
+        - update grid to reflect player choice
+        - disply grid
+        - determine if there is a winner
+        - if win_status is true -> break
+        - check if grid is full
+        - if full_status is true -> break
+        - player two makes their choice
+        - update grid
+        - display grid
+        - determine if there is a winner
+        - if win_status is true -> break
+        - check if grid is full
+        - if full_status is true -> break
+
+    - if win_status is true
+        - display the winner with a message: (Player X wins!)
+
+    - if full_status is true
+        - display message: (No more moves!)
+
+    - prompt player to play again.
+    - if player choses to quit, end the program
+    - if player chooses to continue
+        - empty the grid
+        - flip win_status
+        - flip full_status
+        - init token_count to 0
+        - loop 
+
+    
+
+
+
