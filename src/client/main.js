@@ -20,14 +20,9 @@ for (var i = 0; i < totalColumns; i++){
 }
 
 var mouse = {
-    screenPos: {
-        x:0,
-        y:0
-    },
     x:0,
     y:0
 }
-var isSelecting = false;
 
 var keyDown = {
     ctrl: false,
@@ -64,7 +59,19 @@ function gameUpdate() {
         keyDown.downArrow = false;
     }
 
-    
+    for (var i = 0; i < pieces.length; i += 6) {
+        if (mouse.x > pieces[i].x - pieces[i].r && mouse.x < pieces[i].x + pieces[i].r) {
+            for (var j = i; j < i + 6; j++) {
+                if (j + 1 >= i + 6 || pieces[j + 1].color != "black") {
+                    if (pieces[j].color == "black"){
+                        pieces[j].hovered = true;
+                        break;
+                    }
+                    
+                }
+            }
+        }
+    }
 
     draw();
 }
