@@ -19,6 +19,20 @@ Global variables:
     int token_count
     int cols = 7
     int rows = 6
+
+    grid[6][7] // 6 rows, 7 cols // type: str value // indicating token type or empty
+
+    column_fill_counts[7] // type: integer
+    // coulmn fill counts explaination
+    // contains integers all initially 0
+    // say a token is inserted into col 4 [row index 3]
+    // index 6 will increment it's integer
+
+    // if column_fill_counts[4-1] >= rows, stop. Player needs to choose another column.
+
+    // to determine where token should land in col 4, take [6 - column_fill_counts[4-1]] (i.e. total slots in col - consumed slots in col)
+    // 6 - 2 is four so token should land in column 4 at row 4 [aka grid[4-1][4-1]]
+    
     
 
 
@@ -39,7 +53,7 @@ checkFull:
 displayGrid:
     for (let i = 0; i < rows; i++)
         for (let k = 0; k < cols; i++)
-            //draw grid
+            //print position (either: empty(null), red, or black)
 
 displayRules:
     print rules on screen/browser
@@ -48,12 +62,12 @@ emptyGrid:
     iteratively re-initialize each slot to null
 
 updategrid:
-    token++
-
-    for 
+    (will discuss)
 
 
 CheckWinner:
+
+    
 
 
 
