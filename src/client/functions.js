@@ -61,4 +61,59 @@ function resize() {
     //ctx.translate(currentWidth / 2 - defaultWidth / 2, 0);
 }
 
+function checkForHover(){
+    for (var i = 0; i < connect4.rack.columns; i++) {
+        if (connect4.mouse.x > connect4.pieces[i][0].x - connect4.pieces[i][0].r && connect4.mouse.x < connect4.pieces[i][0].x + connect4.pieces[i][0].r) {
+            for (var j = 0; j < connect4.rack.rows; j++) {
+                if (j + 1 >= connect4.rack.rows || connect4.pieces[i][j + 1].color != "black") {
+                    if (connect4.pieces[i][j].color == "black") {
+                        connect4.pieces[i][j].hovered = true;
+                        break;
+                    }
 
+                }
+            }
+        }
+    }
+}
+
+function nextPlayersTurn(){
+    if (connect4.currentPlayerTurn == 1) connect4.currentPlayerTurn = 2;
+    else connect4.currentPlayerTurn = 1;
+}
+
+
+function checkIfRackFull(){
+    for (var i = 0; i < connect4.rack.columns; i++) {
+        if (connect4.pieces[i][0].color == "black"){
+            return false;
+        }
+    }
+    gameEnd();
+    return true;
+}
+
+function gameEnd(){
+    //pause game until button is pressed for new game
+    connect4.gameEnd = true;
+
+}
+
+function newGame(){
+    //basically reset all values except score
+
+}
+
+function checkWinner(){
+    //xavier's code here
+
+
+    if(connect4.winner==1) {
+        connect4.scores.player1++;
+        gameEnd();
+    }
+    else if (connect4.winner == 2) {
+        connect4.scores.player2++;
+        gameEnd();
+    }
+}

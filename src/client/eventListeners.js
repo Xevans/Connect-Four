@@ -2,51 +2,46 @@
 //window.addEventListener('resize', resize);
 
 document.addEventListener("mousemove", function(e) {
-    //var oldMouse = {x:mouse.x, y:mouse.y};
     var cRect = canvas.getBoundingClientRect();
     scaleX = canvas.width / cRect.width;
     scaleY = canvas.height / cRect.height;
-    //var mouse = { x: 0, y: 0 };
-    mouse.x = Math.floor((e.clientX - cRect.left) * scaleX);
-    mouse.y = Math.floor((e.clientY - cRect.top) * scaleY);
-   // mouse.x = Math.floor(mouse.screenPos.x*((canvas.width/desiredScale)/window.innerWidth));
-    //mouse.y = Math.floor(mouse.screenPos.y*((canvas.height/desiredScale)/window.innerHeight));
-    // if(isSelecting){
-    //     selecting(oldMouse);
-    // }
-    
-    
+    connect4.mouse.x = Math.floor((e.clientX - cRect.left) * scaleX);
+    connect4.mouse.y = Math.floor((e.clientY - cRect.top) * scaleY);
 });
 
 
 document.addEventListener("mousedown", function(e) {
     //left mouse button
     if(e.which==1){
-        //var oldMouse = {x:mouse.x, y:mouse.y};
-        var cRect = canvas.getBoundingClientRect();
-        scaleX = canvas.width / cRect.width;
-        scaleY = canvas.height / cRect.height;
-        var mouse = { x: 0, y: 0 };
-        mouse.x = Math.floor((e.clientX - cRect.left) * scaleX);
-        mouse.y = Math.floor((e.clientY - cRect.top) * scaleY);
-        // mouse.x = Math.floor(mouse.screenPos.x*((canvas.width/desiredScale)/window.innerWidth));
-        //mouse.y = Math.floor(mouse.screenPos.y*((canvas.height/desiredScale)/window.innerHeight));
-        // if(isSelecting){
-        //     selecting(oldMouse);
-        // }
 
-        var tempWidth = pieces[0].r;
-        for (var i = 0; i < pieces.length; i += 6) {
-            if (mouse.x > pieces[i].x - tempWidth && mouse.x < pieces[i].x + tempWidth) {
-                //pieces[i].hovered = true;
-                for (var j = i; j < i + 6; j++) {
-                    if (j + 1 >= i + 6 || pieces[j + 1].color != "black") {
-                        pieces[j].changeColor("red");
-                        break;
+        if(!connect4.paused && !connect4.gameEnd){
+            //place down piece
+            var cRect = canvas.getBoundingClientRect();
+            scaleX = canvas.width / cRect.width;
+            scaleY = canvas.height / cRect.height;
+            connect4.mouse.x = Math.floor((e.clientX - cRect.left) * scaleX);
+            connect4.mouse.y = Math.floor((e.clientY - cRect.top) * scaleY);
+            tempWidth = connect4.pieces[0][0].r;
+            for (var i = 0; i < connect4.rack.columns; i++) {
+                if (connect4.mouse.x > connect4.pieces[i][0].x - tempWidth && connect4.mouse.x < connect4.pieces[i][0].x + tempWidth) {
+                    for (var j = 0; j < connect4.rack.rows; j++) {
+                        if (j + 1 >= connect4.rack.rows || connect4.pieces[i][j + 1].color != "black") {
+                            if (connect4.pieces[i][j].color == "black") {
+                                if (connect4.currentPlayerTurn == 1) connect4.pieces[i][j].changeColor("red");
+                                else connect4.pieces[i][j].changeColor("yellow");
+                                checkWinner();
+                                checkIfRackFull();
+                                //only change turns if next turn as able to be played. game will pause otherwise
+                                if (!connect4.gameEnd) nextPlayersTurn();
+                                break;
+                            }
+
+                        }
                     }
                 }
             }
         }
+        
     }
     
 });
@@ -101,105 +96,3 @@ document.addEventListener("mousedown", function(e) {
 
 // });
 
-/*
-main.js
-    global variables/startup of program
-        init canvas
-        init ctx which allows us to draw and do stuff to canvas
-        init
-        assign player 1 as red and player 2 as yellow
-        display initialized game board(empty connect four grid)
-
-    Gameloop
-        determine which piece is hovered
-        call draw
-
-    draw
-        clear canvas
-        draw board
-        loop through pieces and call its draw function
-        draw who's turn it is
-        draw instuctions if needed
-
-
-    newGame
-        win_status = false
-        full_status = false
-        init token_count to 0
-        loop through pieces and set to default values
-        make it p1's turn
-
-eventlisteners.js
-    mousemove
-        update mouse.x and mouse.y values
-
-    mousedown
-        update mouse.x and mouse.y values
-        place piece if in valid spot
-
-
-functions.js
-    drawRoundedRect(x, y, width, height, radius, fillColor, strokeColor, lineWidth)
-        if fillColor = -1 then dont fill
-        if strokeColor = -1 then dont draw stroke
-    
-    clamp(value, lower, upper)
-        clamps the value to be between lower and upper
-
-    resize
-        does nothing for now
-
-objects.js
-    Piece
-
-
-checkwinner
-    horizontal checks
-    for(i=indexI-3; i<=indexI; i++){
-        for(j=i; j<i+4; j++){
-
-        }
-
-    }
-
-    di check
-    for(i=indexI-3, j=indexJ+3; i<=indexI && j>=indexJ; i++, j--){
-        for(k=i, l=j; k<i+4 && l>j-4; k++, j--){
-
-        }
-
-    }
-
-
-    
-
-    - prompt player to choose a column
-        - update grid to reflect player choice
-            - disply grid
-                - determine if there is a winner
-                    - if win_status is true -> break
-- check if grid is full
-    - if full_status is true -> break
-- player two makes their choice
-    - update grid
-        - display grid
-            - determine if there is a winner
-                - if win_status is true -> break
-- check if grid is full
-    - if full_status is true -> break
-
-- if win_status is true
-    - display the winner with a message: (Player X wins!)
-
-- if full_status is true
-    - display message: (No more moves!)
-
-- prompt player to play again.
-    - if player choses to quit, end the program
-    - if player chooses to continue
-- empty the grid
-    - flip win_status
-        - flip full_status
-            - init token_count to 0
-                - loop
-*/

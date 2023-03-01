@@ -11,6 +11,181 @@ Each player takes turns inserting tokens into a column that land in the next ava
 
 When a player has at least four adjacent tokens of their color (i.e. in horizontal, diagonal, vertical) the associated player wins.
 
+
+//this is what the code does for now
+
+
+main.js
+    global variables/startup of program
+        init canvas
+        init ctx -which allows us to draw and do stuff to canvas
+        init desiredScale -not used atm
+        init connect4
+            gameEnd -true if game is ended
+            paused -true if game is paused
+            winner -which player won the game 0 if neither tie
+            rack -like the board
+                x
+                y
+                width
+                height
+                columns
+                rows
+                cornerRadius
+                fillColor
+                strokeColor
+                strokeWeight
+            currentPlayerTurn
+            scores
+                player1 -player 1's score
+                player2
+            pieces -two dim array of all piece objects
+            mouse
+                x
+                y
+            restartButton -button that will restart game on click
+            keyDown -status of keyboard buttons down not using atm
+                ctrl
+                shift
+                enter
+                leftArrow
+                rightArrow
+                upArrow
+                downArrow
+
+    startup of program
+        call resize
+
+
+    startGame
+        setInterval to call gameUpdate every 17ms
+
+    gameUpdate
+        if game not paused and game not ended
+            call checkForHover
+        call update for connect4.restartButton
+        call draw
+
+    draw
+        clear canvas
+        draw board
+        loop through pieces and call its draw function
+        draw who's turn it is
+        draw instuctions if needed
+
+
+eventlisteners.js
+    mousemove
+        update mouse.x and mouse.y values
+
+    mousedown
+        if game not paused and game not ended
+            update mouse.x and mouse.y values
+            if selected valid spot
+                place piece
+                call checkWinner()
+                call checkIfRackFull()
+                if game not ended make it other player's turn
+
+
+
+functions.js
+    drawRoundedRect(x, y, width, height, radius, fillColor, strokeColor, lineWidth)
+        if fillColor = -1 then dont fill
+        if strokeColor = -1 then dont draw stroke
+    
+    clamp(value, lower, upper)
+        clamps the value to be between lower and upper
+
+    resize
+        does nothing for now
+
+    checkForHover
+        changes color of piece where next valid piece would go if clicked depends on which column of
+        rake mouse is hovering over
+    
+    nextPlayersTurn
+        changes state of connect4.currentPlayerTurn to make it the other players turn
+
+    checkIfRackFull
+        checks if the rack is full of pieces
+            if so then ends game in a tie
+    
+    gameEnd
+        pauses game
+
+    newGame
+        resets all variable values except score
+
+    checkwinner
+        checks if token just placed is a winning move
+
+objects.js
+    Piece
+        x -position center
+        y -position center
+        r -radius of circle
+        colNum
+        rowNum
+        color -fill color
+        hovered -whether to fill with hover color or not
+
+        afterDraw
+            makes hovered false
+
+        changeColor(newColor)
+            changes color to new color
+            hover to false
+
+        draw
+            draws circle at x and y position with r radius and either color or hovered color (depends on which player's turn it is)
+            calls afterDraw
+    
+    RectangleRoundedButton
+        x = x;
+        y = y;
+        w = w;
+        h = h;
+        r = r;
+        onClick -function to call on click
+        fillColor
+        strokeColor
+        strokeWeight
+        active -if you should display button and call onClick if clicked
+        text
+        textColor
+        font
+        hovered -if button is hovered
+
+        update
+            if mouse if hovered 
+                hovered to true
+        
+        afterDraw
+            hovered to false
+
+        draw
+            if active
+                drawroundedrect using x,y,w,h,r,fillColor,strokeColor,strokeWeight
+                if hovered
+                    drawroundedrect using x,y,w,h,r,transparent black,strokeColor,strokeWeight
+            call afterDraw
+
+        clicked
+            call onClick
+
+
+
+
+
+
+
+
+
+
+//this is from before just keeping for later
+
+
 status variables (global):
     bool win_status, full_status
 
@@ -110,6 +285,4 @@ Game Loop Algorithm:
         - loop 
 
     
-
-
 
