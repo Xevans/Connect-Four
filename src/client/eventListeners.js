@@ -14,7 +14,12 @@ document.addEventListener("mousedown", function(e) {
     //left mouse button
     if(e.which==1){
 
-        if(!connect4.paused && !connect4.gameEnd){
+        //check if buttons are pressed
+        connect4.restartButton.checkClicked()
+        connect4.aiButton.checkClicked()
+
+        if (!connect4.paused && !connect4.gameEnd && (!connect4.ai || connect4.currentPlayerTurn == 1)){
+
             //place down piece
             var cRect = canvas.getBoundingClientRect();
             scaleX = canvas.width / cRect.width;
@@ -29,10 +34,7 @@ document.addEventListener("mousedown", function(e) {
                             if (connect4.pieces[i][j].color == "black") {
                                 if (connect4.currentPlayerTurn == 1) connect4.pieces[i][j].changeColor("red");
                                 else connect4.pieces[i][j].changeColor("yellow");
-                                checkWinner();
-                                checkIfRackFull();
-                                //only change turns if next turn as able to be played. game will pause otherwise
-                                if (!connect4.gameEnd) nextPlayersTurn();
+                                endOfTurn(i, j);
                                 break;
                             }
 

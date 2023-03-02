@@ -8,6 +8,9 @@ class Piece {
         this.rowNum = rowNum;
         this.color = "black";
         this.hovered = false;
+        this.highlighted = false;
+        this.timer = 0;
+        this.maxTimer = 2000
     }
 
     afterDraw(){
@@ -19,9 +22,14 @@ class Piece {
         this.hovered = false;
     }
 
+    update() {
+        this.timer -= time.difference;
+    }
+
     draw() {
+        ctx.globalAlpha = 1;
         ctx.fillStyle = this.color;
-        if (this.hovered) ctx.fillStyle = "pink"
+        
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
         ctx.fill();
@@ -33,8 +41,43 @@ class Piece {
         //     ctx.stroke();
         // }
         
+        if (this.highlighted) {
+            if (this.timer <= 0) {
+                this.timer = this.maxTimer;
+            }
+            if (this.timer > this.maxTimer / 2) {
+                // if (this.color == "red") ctx.fillStyle = "pink"
+                // else ctx.fillStyle = "lightyellow"
+                ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
+                ctx.fill();
+            }
+        }
+        else if (this.hovered) {
+            // if (connect4.currentPlayerTurn == 1) ctx.fillStyle = "pink"
+            // else ctx.fillStyle = "lightyellow"
+            if (connect4.currentPlayerTurn == 1) ctx.fillStyle = "red"
+            else ctx.fillStyle = "yellow"
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, true);
+            ctx.fill();
+            ctx.fillStyle = "rgba(255, 255, 255, 0.5)"
+            ctx.fill();
+        } 
 
         this.afterDraw();
+    }
+
+    reset() {
+        this.color = "black";
+        this.hovered = false;
+        this.highlighted = false;
+        this.timer = 0;
+    }
+
+    highlightWinner(){
+        this.highlighted = true;
     }
 }
 
@@ -53,25 +96,24 @@ class RectangleRoundedButton{
         this.text = text;
         this.textColor = textColor;
         this.font = font;
-        this.hover = false;
+        this.hovered = false;
     }
 
     update(){
         if (connect4.mouse.x > this.x && connect4.mouse.x < this.x + this.w && connect4.mouse.y > this.y && connect4.mouse.y < this.y + this.h){
-            this.hover = true;
-            console.log(1)
+            this.hovered = true;
         }
     }
 
     afterDraw(){
-        this.hover = false;
+        this.hovered = false;
     }
 
     draw(){
         if(this.active){
             ctx.globalAlpha = 1;
             drawRoundedRect(this.x, this.y, this.w, this.h, this.r, this.fillColor, this.strokeColor, this.strokeWeight);
-            if (this.hover) drawRoundedRect(this.x, this.y, this.w, this.h, this.r, "rgba(0, 0, 0, 0.2)", this.strokeColor, this.strokeWeight);
+            if (this.hovered) drawRoundedRect(this.x, this.y, this.w, this.h, this.r, "rgba(0, 0, 0, 0.2)", this.strokeColor, this.strokeWeight);
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.font = "50px Arial";
@@ -84,5 +126,16 @@ class RectangleRoundedButton{
 
     clicked(){
         this.onClick();
+        console.log(this.text)
+    }
+
+    checkClicked(){
+        if (connect4.mouse.x > this.x && connect4.mouse.x < this.x + this.w && connect4.mouse.y > this.y && connect4.mouse.y < this.y + this.h) {
+            this.clicked();
+        }
+    }
+
+    reset(){
+        ;
     }
 }

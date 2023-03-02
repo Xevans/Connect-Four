@@ -35,7 +35,7 @@ main.js
                 fillColor
                 strokeColor
                 strokeWeight
-            currentPlayerTurn
+            currentPlayerTurn - 1 or 2
             scores
                 player1 -player 1's score
                 player2
@@ -55,6 +55,7 @@ main.js
 
     startup of program
         call resize
+        call startGame
 
 
     startGame
